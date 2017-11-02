@@ -4,6 +4,8 @@ local audio = require('audio')
 
 function MainScene:onCreate()
     -- 添加音乐音效
+
+    audio.init()
     if audio.isMusicOn() and not audio.isMusicPlaying() then
         audio.playMusic('Sound/startBGM.mp3', true)
     end

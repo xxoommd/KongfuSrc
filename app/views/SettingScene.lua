@@ -23,7 +23,7 @@ function SettingScene:onCreate()
         cc.p(display.cx + 40, display.cy - 190),
         function()
             audio.playButtonEffect()
-            print('save...')
+            self:getApp():enterScene("MainScene")
         end
     )
 

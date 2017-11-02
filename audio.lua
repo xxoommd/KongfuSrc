@@ -3,6 +3,11 @@ local M = {}
 local defaultBackgroundMusic = 'Sound/startBGM.mp3'
 local userDefault = cc.UserDefault:getInstance()
 
+function M.init()
+	M.setMusicVolume(M.getMusicVolume())
+	M.setEffectVolume(M.getEffectVolume())
+end
+
 function M.playMusic(musicFile)
 	AudioEngine.playMusic(musicFile, true)
 end

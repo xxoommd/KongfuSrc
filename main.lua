@@ -2,7 +2,8 @@
 cc.FileUtils:getInstance():setPopupNotify(false)
 
 require "config"
-require "cocos.init"
+require "cocos.init" -- == cocos/init.lua
+
 
 local function main()
     -- 加载所有的资源

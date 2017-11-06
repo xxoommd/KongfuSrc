@@ -31,35 +31,60 @@ function SettingScene:onCreate()
     local effectOn = audio.isEffectOn()
 
     -- 音乐和音效的开关
-    self:createCheckBox('unchecked.png', 'Hook.png', cc.p(318, 457), function(ref, type)
-        audio.playButtonEffect()
+    local musicSwitch = self:createCheckBox(
+        'unchecked.png', 
+        'Hook.png', 
+        cc.p(318, 457), 
+        function(ref, type)
+            audio.playButtonEffect()
         
-        if type == ccui.CheckBoxEventType.selected then
-            audio.setMusicOn(true)
-        elseif type == ccui.CheckBoxEventType.unselected then
-            audio.setMusicOn(false)
+            if type == ccui.CheckBoxEventType.selected then
+                audio.setMusicOn(true)
+            elseif type == ccui.CheckBoxEventType.unselected then
+                audio.setMusicOn(false)
+            end
         end
-    end):setSelected(musicOn)
+    )
+    musicSwitch:setSelected(true)
 
-    self:createCheckBox('unchecked.png', 'Hook.png', cc.p(318, 357), function(ref, type)
-        audio.playButtonEffect()
+    local userDefault = cc.UserDefault:getInstance()
 
-        if type == ccui.CheckBoxEventType.selected then
-            audio.setEffectOn(true)
-        elseif type == ccui.CheckBoxEventType.unselected then
-            audio.setEffectOn(false)
+    userDefault:setBoolForKey(key, val)
+    userDefault:getBoolForKey(key)
+
+    self:createCheckBox(
+        'unchecked.png', 
+        'Hook.png', 
+        cc.p(318, 357), 
+        function(ref, type)
+            audio.playButtonEffect()
+
+            if type == ccui.CheckBoxEventType.selected then
+                audio.setEffectOn(true)
+            elseif type == ccui.CheckBoxEventType.unselected then
+                audio.setEffectOn(false)
+            end
         end
-    end):setSelected(effectOn)
+    ):setSelected(true)
 
     -- 音乐和音效的进度条
-    self:createSlider('bgBar.png', 'progressBar.png', 'ThumbBtn.png', cc.p(760, 457), function(ref, type)
-        if type == ccui.SliderEventType.percentChanged then
-            local volume = ref:getPercent()
-            audio.setMusicVolume(volume)
+    self:createSlider(
+        'bgBar.png', 
+        'progressBar.png', 
+        'ThumbBtn.png', 
+        cc.p(760, 457), 
+        function(ref, type)
+            if type == ccui.SliderEventType.percentChanged then
+                local volume = ref:getPercent()
+                audio.setMusicVolume(volume)
+            end
         end
-    end):setPercent(audio.getMusicVolume())
+    ):setPercent(audio.getMusicVolume())
 
-    self:createSlider('bgBar.png', 'progressBar.png', 'ThumbBtn.png', cc.p(760, 357), function(ref, type)
+    self:createSlider('bgBar.png', 'progressBar.png', 
+        'ThumbBtn.png', 
+        cc.p(760, 357), 
+        function(ref, type)
         if type == ccui.SliderEventType.percentChanged then
             local volume = ref:getPercent()
             audio.setEffectVolume(volume)
@@ -68,9 +93,11 @@ function SettingScene:onCreate()
 end
 
 function SettingScene:createCheckBox(bg, selected, pos, callback)
-    local switch = ccui.CheckBox:create(bg, bg, selected, bg, bg, ccui.TextureResType.plistType)
+    local switch = ccui.CheckBox:create(
+        bg, bg, selected, bg, bg, ccui.TextureResType.plistType
+    )
     switch:setPosition(pos)
-    switch:setEnabled(true)
+    switch:setEnabled(true) -- 设置可点击
     switch:addEventListener(callback)
     self:add(switch)
     return switch

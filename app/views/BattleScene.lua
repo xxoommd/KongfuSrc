@@ -1,8 +1,12 @@
 local BattleScene = class("BattleScene", cc.load("mvc").ViewBase)
 local audio = require('audio')
-local hero = require('app.models.hero')
+local hero = nil
 
 local ZERO_POINT = cc.p(0, 0)
+
+local function handler(interval)
+    BattleScene:update(interval)
+end
 
 function BattleScene:onCreate()
     -- 添加背景
@@ -15,7 +19,9 @@ function BattleScene:onCreate()
     self:addHero()
 
     -- 帧刷新
-    -- self:scheduleUpdateWithPriorityLua(self.update, 0)
+    self:scheduleUpdateWithPriorityLua(function(dt)
+        self:update(dt)
+    end, 0)
 end
 
 function BattleScene:createMap(name)
@@ -103,13 +109,17 @@ function BattleScene:addControllers()
     self:add(attackBg)
 end
 
-function BattleScene:update()
+function BattleScene:update(dt)
+    print(dt)
 end
 
 function BattleScene:addHero()
-    hero:initSprite()
-    hero:setPosition(cc.p(100, 360))
-    self:addChild(hero)
+    if hero == nil then
+        hero = require('app.models.hero')
+        hero:initSprite()
+        hero:setPosition(cc.p(200, 360))
+        self:addChild(hero)
+    end
 end
 
 

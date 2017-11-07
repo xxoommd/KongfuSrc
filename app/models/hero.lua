@@ -1,4 +1,5 @@
 local Hero = cc.Node:create()
+Hero:retain()
 
 Hero.idleSpriteFrame = nil
 Hero.sprite = nil
@@ -13,6 +14,7 @@ local function createAnimation()
 end
 
 function Hero:initSprite()
+	self:removeAllChildren()
 	self.idleSpriteFrame = display.newSpriteFrame('idle.png')
 	self.sprite = cc.Sprite:createWithSpriteFrame(self.idleSpriteFrame)
 	self:addChild(self.sprite)
@@ -20,10 +22,8 @@ end
 
 -- 开始走动动画
 function Hero:startWalkAnimation(direction)
-	if self.direction ~= direction then
-		self.direction = direction
-		self.sprite:setFlippedX(direction)
-	end
+	self:resetToIdle()
+	self.sprite:setFlippedX(direction)
 
 	local animation = cc.Animation:create()
 
